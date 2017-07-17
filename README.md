@@ -63,7 +63,7 @@ d1 $ sound "bd([5 3]/2,8)"
 d1 $ someCyclesBy 0.25 (fast 2) $ sound 
 ``` 
 
-##### like multiple every
+##### like multiples 'every'
 ```c2hs
 d1 $ foldEvery [3, 4, 5] (fast 2) $ sound 
 ``` 
@@ -72,7 +72,9 @@ d1 $ foldEvery [3, 4, 5] (fast 2) $ sound
 d1 $ every' 4 0 (somefunc) $ sound
 ``` 
 ##### starts at cycle 2
-``` d1 $ every' 4 2 (somefunc) $ sound ``` 
+```c2hs
+d1 $ every' 4 2 (somefunc) $ sound 
+``` 
 
 ##### Fit is cool! Use it in seqPLoop
 ```c2hs
@@ -87,9 +89,8 @@ d1 $ slow "<2 4/3>" $ sound
 ```c2hs
 d1 $ spread ($) [fast 2, rev, slow 2, striate 3, (# speed "0.8")] $ sound 
 ```
-##### try this
 ```c2hs
-d1 $ fastspread slow [2,4/3] $ sound 
+d1 $ fastspread slow [2,4/3] $ sound  --- inside one cycle(?)
 ```
 
 #####   Within!!!
@@ -150,7 +151,7 @@ d1 $ n (run "<4 8 4 6>") # sound
 # somefunc (slow 8 $ saw)
 d1 $ s " xxxx*4 " # n (choose [0,2,5]) 
 ```
-##### *** constrain continuous patterns speed ***
+##### constrain continuous pattern's speed
 ```c2hs
 d1 $ s (discretise 1 $ choose["kif", "kip"]) 
 d1 $ s (struct "x ~ x ~ ~ x ~ ~" $ choose["kif", "kip"]) 
@@ -403,7 +404,7 @@ bgold 8:38 PM
   Note-following filter:
 
 ```sc
-~dirt.addModule('lpf2', {|dirtEvent| dirtEvent.sendSynth("dirt_lpf2" ++ ~dirt.numChannels,
+~dirt.addModule( 'lpf2', {|dirtEvent| dirtEvent.sendSynth("dirt_lpf2" ++ ~dirt.numChannels,
     [cutoff2: ~cutoff2, freq:~freq, resonance:~resonance, out: ~out])}, {~cutoff2.notNil});
 
 SynthDef("dirt_lpf2"++~dirt.numChannels, {|out, cutoff2=0, resonance, freq|
@@ -417,14 +418,15 @@ SynthDef("dirt_lpf2"++~dirt.numChannels, {|out, cutoff2=0, resonance, freq|
 
 ##### 2017-07-17------------------------------------------------------------------------------------------------------------
 
-###### this is pure gold vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+###### this is pure gold vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 
 danielmkarlsson 5:51 PM
   Hey gang.
   I'd like to choose a new value for a sine envelope each time that particular envelope has completed its full duration.
   This example chooses a new value for the sine envelope each cycle which is not what I want:
-``` d1 $ s "bass1:4*8" # cut 1 # gain (slow (choose [1..16]) $ scale 0 1 $ sine) ```
-
+```c2hs
+d1 $ s "bass1:4*8" # cut 1 # gain (slow (choose [1..16]) $ scale 0 1 $ sine) 
+```
   That said, you can fake it for a finite amount of time with seqP
   
 ```c2hs
@@ -452,19 +454,16 @@ ok try this
 yaxu
 10:57
 eval these
-
+```c2hs
 import Sound.Tidal.Time
-
 import Sound.Tidal.Utils
-
 import Data.Maybe
-
+```
 yaxu
 10:57
 then this
-
-
-`let randArcs :: Int -> Pattern [Arc]
+```c2hs
+let randArcs :: Int -> Pattern [Arc]
     randArcs n = do rs <- mapM (\x -> (pure $ (toRational x)/(toRational n)) <~ rand) [0 .. (n-1)]
                     let rats = map toRational rs
                         total = sum rats
@@ -488,46 +487,42 @@ then this
                              ) $ enumerate $ thd' $ head $ arc (randArcs n) (sam s, nextSam s)
     compressTo (s,e) p = compress (cyclePos s, e-(sam s)) p
     substruct' :: Pattern Int -> Pattern a -> Pattern a
-    substruct' s p = Pattern $ \a -> concatMap (\(a', _, i) -> arc (compressTo a' (inside (1/toRational(length (arc s (sam (fst a), nextSam (fst a))))) (rotR (toRational i)) p)) a') (arc s a)`
-
-
+    substruct' s p = Pattern $ \a -> concatMap (\(a', _, i) -> arc (compressTo a' (inside (1/toRational(length (arc s (sam (fst a), nextSam (fst a))))) (rotR (toRational i)) p)) a') (arc s a)
+```
 then this
+```c2hs
+d1 $ slow 16 $ substruct' (randStruct 16) $ sound "arpy*16" # gain (scale 0.5 1 sine) # speed (discretise 1 $ scale 1 2 rand)
+```
+yaxu 12:05 AM
+a bit better: 
+```c2hs
+d1 $ substruct (slow 8 $ randStruct 4) $ sound "arpy*8" # gain (scale 0.5 1 sine) # up (discretise 1 $ choose [0,7,12])
 
-```d1 $ slow 16 $ substruct' (randStruct 16) $ sound "arpy*16" # gain (scale 0.5 1 sine) # speed (discretise 1 $ scale 1 2 rand)```
-
-
-
-yaxu
-12:05 AM
-a bit better: d1 $ substruct (slow 8 $ randStruct 4) $ sound "arpy*8" # gain (scale 0.5 1 sine) # up (discretise 1 $ choose [0,7,12])
-12:08
-hmm d1 $ substruct (randStruct 2) $ sound "arpy*8" # gain (scale 0.5 1 sine) # up (discretise 1 $ choose [0,7,12,2])
-
-
+d1 $ substruct (randStruct 2) $ sound "arpy*8" # gain (scale 0.5 1 sine) # up (discretise 1 $ choose [0,7,12,2])
+```
 yaxu 1:12 PM
-The first pattern sounds like it has no metronomic pulse when you play it on its own but when you add the second pattern you can hear that the cp always aligns perfectly with the start of every fourth repetition of the first pattern
-
+  The first pattern sounds like it has no metronomic pulse when you play it on its own but 
+  when you add the second pattern you can hear that the cp always aligns perfectly with 
+  the start of every fourth repetition of the first pattern
+```c2hs
 d1 $ slow 4 $ substruct' (randStruct 4) $ stack [n (off 0.125 (+7) $ "e2 d4 e3 [~ g3]") # sound "superzow" # pan saw # lpf (scale 500 1000 sine) # lpq 0.3]
 
 d2 $ slow 4 $ sound "cp" # shape 0.6
-
-
-danielmkarlsson
-1:19 PM
-That's cool.
-1:20
-I was messing around with this and it feels like it might be slightly off at times choosing values while not at zero. Try this:
-
+```
+danielmkarlsson 1:19 PM
+  I was messing around with this and it feels like it might be slightly off at times choosing values while not at zero.
+  Try this:
+```c2hs
 d1
-$ slow 16
-$ substruct' (randStruct 4)
-$ s "bass1*64"
-# gain (scale 0 1 $ sine)
-# up (discretise 1 $ choose [0,2,3,5,7,8,11] + choose [0,12,24,36])
-# n (discretise 1 $ choose [5,7,9,13,19])
-# pan (discretise 1 $ scale 0 1 $ rand)
-
-Ah! bgolds solution with `0.25 ~> sine` sorted it!
+  $ slow 16
+  $ substruct' (randStruct 4)
+  $ s "bass1*64"
+  # gain (scale 0 1 $ sine)
+  # up (discretise 1 $ choose [0,2,3,5,7,8,11] + choose [0,12,24,36])
+  # n (discretise 1 $ choose [5,7,9,13,19])
+  # pan (discretise 1 $ scale 0 1 $ rand)
+```
+  Ah! bgolds solution with `0.25 ~> sine` sorted it!
 
 
 
