@@ -10,18 +10,14 @@
 
 #### change order
 ```c2hs 
-d1 $ palindrome $ 
- ```
-is the same as
-```c2hs 
-d1 $ every 2 (rev) $ n 
-```
+d1 $ palindrome $ ``` is the same as ```c2hs 
+d1 $ every 2 (rev) $ n ```
 ```c2hs
-c2hs d1 $ iter 4 $ sound
-c2hs d1 $ sound $ scramble 3 "xxx*3"
-c2hs d1 $ every 4 (0.25 <~) $ sound
-c2hs d1 $ "<0 0.5 0.125>" <~ sound
-c2hs d1 $ "[0 0.25]/4" <~ (sound "  ") 
+d1 $ iter 4 $ sound
+d1 $ sound $ scramble 3 "xxx*3"
+d1 $ every 4 (0.25 <~) $ sound
+d1 $ "<0 0.5 0.125>" <~ sound
+d1 $ "[0 0.25]/4" <~ (sound "  ") 
 ```
 
 #### play a fraction of a pattern
