@@ -10,8 +10,9 @@
 
 #### change order
 ```c2hs 
-d1 $ palindrome $ ``` is the same as ```c2hs 
-d1 $ every 2 (rev) $ n ```
+d1 $ palindrome $ --- is the same as
+d1 $ every 2 (rev) $ n 
+```
 ```c2hs
 d1 $ iter 4 $ sound
 d1 $ sound $ scramble 3 "xxx*3"
@@ -21,81 +22,117 @@ d1 $ "[0 0.25]/4" <~ (sound "  ")
 ```
 
 #### play a fraction of a pattern
-``` d1 $ linger 0.25 $ sound ```
-``` d1 $ linger "<0.25 0.5 1>" $ sound ```
-``` d1 $ every 2 (linger 0.25) $ ```
-``` d1 $ trunc "<0.75 0.25 1>" $ sound ```
-``` d1 $ zoom (0.25, 0.75) $ sound ```
-``` d1 $ every 4 (zoom (0.25, 0.75)) $ sound ```
-
+```c2hs
+d1 $ linger 0.25 $ sound
+d1 $ linger "<0.25 0.5 1>" $ sound
+d1 $ every 2 (linger 0.25) $
+d1 $ trunc "<0.75 0.25 1>" $ sound
+d1 $ zoom (0.25, 0.75) $ sound
+d1 $ every 4 (zoom (0.25, 0.75)) $ sound 
+```
 #### apply a func sometimes in a cycle
-``` d1 $ sometimesBy 0.25 (somefunc) $ sound ```
+```c2hs
+d1 $ sometimesBy 0.25 (somefunc) $ sound
+```
 
 #### filter events
-``` d1 $ degradeBy 0.9 $ sound ```
+```c2hs
+d1 $ degradeBy 0.9 $ sound 
+```
 
 #### More groove
-``` d1 $ brak $ sound ```
-``` d1 $ swingBy (1/3) 4 $ sound ```
-``` # somefunc (sine*2) ```
+```c2hs
+d1 $ brak $ sound
+d1 $ swingBy (1/3) 4 $ sound
+# somefunc (sine*2)
+```
 
 #### Euclidean
-```d1 $ sound "bd(3,8) sn(5,8)"
+```c2hs
+d1 $ sound "bd(3,8) sn(5,8)"
+```
 #### rotate
-```d1 $ sound "bd(5,8,2)"
-```d1 $ e 3 8 $ sound "bd*2 [sn cp]" ``` 
-``` d1 $ sound "bd([5 3]/2,8)" ``` 
+```c2hs
+d1 $ sound "bd(5,8,2)"
+d1 $ e 3 8 $ sound "bd*2 [sn cp]"
+d1 $ sound "bd([5 3]/2,8)"
+``` 
 
 ### >>>>>>>>>>>>>> Pattern Transformers - Pattern Scale <<<<<<<<<<<<<<<
 
 #### apply a func. in some cycles
-``` d1 $ someCyclesBy 0.25 (fast 2) $ sound ``` 
+```c2hs
+d1 $ someCyclesBy 0.25 (fast 2) $ sound 
+``` 
 
 #### like multiple every
-``` d1 $ foldEvery [3, 4, 5] (fast 2) $ sound ``` 
+```c2hs
+d1 $ foldEvery [3, 4, 5] (fast 2) $ sound 
+``` 
 #### starts at cycle 0
-``` d1 $ every' 4 0 (somefunc) $ sound ``` 
+```c2hs
+d1 $ every' 4 0 (somefunc) $ sound
+``` 
 #### starts at cycle 2
 ``` d1 $ every' 4 2 (somefunc) $ sound ``` 
 
 #### Fit is cool! Use it in seqPLoop
-``` d1 $ fit' 1 4 (run 4) "[0 3*2 2 1 0 3*2 2 [1*8 ~]]/2" $ s "" ``` 
+```c2hs
+d1 $ fit' 1 4 (run 4) "[0 3*2 2 1 0 3*2 2 [1*8 ~]]/2" $ s "" 
+``` 
 
 #### SPREAD!!!
-``` d1 $ spread slow [2,4/3] $ sound ```
+```c2hs
+d1 $ spread slow [2,4/3] $ sound 
+```
 is the same as
-``` d1 $ slow "<2 4/3>" $ sound ```
-``` d1 $ spread ($) [fast 2, rev, slow 2, striate 3, (# speed "0.8")] $ sound ```
+```c2hs
+d1 $ slow "<2 4/3>" $ sound 
+```
+```c2hs
+d1 $ spread ($) [fast 2, rev, slow 2, striate 3, (# speed "0.8")] $ sound 
+```
 #### try
-``` d1 $ fastspread slow [2,4/3] $ sound ```
+```c2hs
+d1 $ fastspread slow [2,4/3] $ sound 
+```
 
 ####   Within!!!
-``` d1 $ within (0, 0.5) (fast 2) $ sound ```
-``` d1 $ within (0.75, 1) (# speed "0.5") $ sound ```
-
-``` d1 $ chunk 4 (somefunc) $ s ```
+```c2hs
+d1 $ within (0, 0.5) (fast 2) $ sound
+d1 $ within (0.75, 1) (# speed "0.5") $ sound 
+```
+```c2hs
+d1 $ chunk 4 (somefunc) $ s
+```
 
 ###  >>>>>>>>>>>>>>>>>>>>>>>>>> Compositions <<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 #### One after the other
-``` d1 $ seqPLoop [
+```c2hs
+d1 $ seqPLoop [
   (0, 16, s "" ),
   (16, 32, s "" )
-] # n (irand 16) ```
-
-``` d1 $ randcat[
+] # n (irand 16) 
+```
+```c2hs
+d1 $ randcat[
 s "  ",
 s "  "
-] # n ( irand 16 ) ```
+] # n ( irand 16 )
+```
 
 #### All together now
-``` d2 $ stack [
+```c2hs
+d2 $ stack [
   s "  ",
   s "  "
-] # n (run 16) ```
+] # n (run 16) 
+```
 
 #### Both ways!!!
-``` d2 $ seqPLoop [
+```c2hs
+d2 $ seqPLoop [
   (0, 32, stack [
     slow 2 $ s "  " # gain 1.5,
     s "  " # gain 0.8
@@ -104,28 +141,33 @@ s "  "
     s "  ",
     s "  "
   ] )
-] ```
+] 
+```
 
 ### >>>>>>>>>>>>>>>>>>>>>>> Utility <<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-``` d1 $ sound "xxx*4" # speed (rand + 0.5) ```
-``` d1 $ n (run "<4 8 4 6>") # sound ```
+```c2hs
+d1 $ sound "xxx*4" # speed (rand + 0.5)
+d1 $ n (run "<4 8 4 6>") # sound
 (scale 0.25 0.75 $ rand)
-``` # somefunc (slow 4 $ sine * 0.5 + 1) ```
-``` # somefunc (scale (-2) 3 $ tri) ```
-``` # somefunc (slow 8 $ saw) ```
-``` d1 $ s " xxxx*4 " # n (choose [0,2,5]) ```
+# somefunc (slow 4 $ sine * 0.5 + 1)
+# somefunc (scale (-2) 3 $ tri)
+# somefunc (slow 8 $ saw)
+d1 $ s " xxxx*4 " # n (choose [0,2,5]) 
+```
 #### ********* constrain continuous patterns speed **********
-``` d1 $ s (discretise 1 $ choose["kif", "kip"]) ```
-``` d1 $ s (struct "x ~ x ~ ~ x ~ ~" $ choose["kif", "kip"]) ```
-
-``` solo $ d1 $ ```
+```c2hs
+d1 $ s (discretise 1 $ choose["kif", "kip"]) 
+d1 $ s (struct "x ~ x ~ ~ x ~ ~" $ choose["kif", "kip"]) 
+solo $ d1 $ 
+```
 
 ### >>>>>>>>>>>>>>>>>>>>>>> Transitions <<<<<<<<<<<<<<<<<<<<<<<<<<
 
-``` t1 (clutchIn 8) $ sound ```
-``` t2 (jumpIn' 1) $ ```
-
+```c2hs
+t1 (clutchIn 8) $ sound 
+t2 (jumpIn' 1) $ 
+```
 
 ## Slack Excerpts
 
@@ -134,7 +176,7 @@ averageaht 5:43 PM
   I know this information can be put together from the tutorial, but I can't figure it out: 
   How can I play a chord progression that lasts more than a single cycle (say, 6 quarter notes) every N cycles?
 
-  assume 4/4 time. every 4 measures I want to play some notes, say ``` "c1 e1 g1 b1 d1"``` , all quarter notes
+  assume 4/4 time. every 4 measures I want to play some notes, say ``` "c1 e1 g1 b1 d1" ``` , all quarter notes
   let me know if that's clear or not
   I know I can pitch notes with up or use midinotes to create the notes
   I can get something to happen every 4 measures using every 4, but this seems like a hack:
