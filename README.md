@@ -1,14 +1,12 @@
-# tidaltut
-
 ## My own Tidal Cycles Tutorial
 
-#### maybe this can be useful for someone someday. Atm, it is only to have organized what I have been learning in Tidal.
+##### maybe this can be useful for someone someday. Atm, it is only to have organized what I have been learning in Tidal.
 
-## Cheat Sheet
+### Cheat Sheet
 
-### >>>>>>>>>>> Pattern Transformers - Event Scale <<<<<<<<<<<<<<<
+#### Pattern Transformers > Event Scale <
 
-#### change order
+##### change order
 ```c2hs 
 d1 $ palindrome $ --- is the same as
 d1 $ every 2 (rev) $ n 
@@ -21,7 +19,7 @@ d1 $ "<0 0.5 0.125>" <~ sound
 d1 $ "[0 0.25]/4" <~ (sound "  ") 
 ```
 
-#### play a fraction of a pattern
+##### play a fraction of a pattern
 ```c2hs
 d1 $ linger 0.25 $ sound
 d1 $ linger "<0.25 0.5 1>" $ sound
@@ -30,74 +28,71 @@ d1 $ trunc "<0.75 0.25 1>" $ sound
 d1 $ zoom (0.25, 0.75) $ sound
 d1 $ every 4 (zoom (0.25, 0.75)) $ sound 
 ```
-#### apply a func sometimes in a cycle
+##### apply a func sometimes in a cycle
 ```c2hs
 d1 $ sometimesBy 0.25 (somefunc) $ sound
 ```
 
-#### filter events
+##### filter events
 ```c2hs
 d1 $ degradeBy 0.9 $ sound 
 ```
 
-#### More groove
+##### More groove
 ```c2hs
 d1 $ brak $ sound
 d1 $ swingBy (1/3) 4 $ sound
 # somefunc (sine*2)
 ```
 
-#### Euclidean
+##### Euclidean
 ```c2hs
 d1 $ sound "bd(3,8) sn(5,8)"
 ```
-#### rotate
+##### rotate
 ```c2hs
 d1 $ sound "bd(5,8,2)"
 d1 $ e 3 8 $ sound "bd*2 [sn cp]"
 d1 $ sound "bd([5 3]/2,8)"
 ``` 
 
-### >>>>>>>>>>>>>> Pattern Transformers - Pattern Scale <<<<<<<<<<<<<<<
+#### Pattern Transformers > Pattern Scale <
 
-#### apply a func. in some cycles
+##### apply a func. in some cycles
 ```c2hs
 d1 $ someCyclesBy 0.25 (fast 2) $ sound 
 ``` 
 
-#### like multiple every
+##### like multiple every
 ```c2hs
 d1 $ foldEvery [3, 4, 5] (fast 2) $ sound 
 ``` 
-#### starts at cycle 0
+##### starts at cycle 0
 ```c2hs
 d1 $ every' 4 0 (somefunc) $ sound
 ``` 
-#### starts at cycle 2
+##### starts at cycle 2
 ``` d1 $ every' 4 2 (somefunc) $ sound ``` 
 
-#### Fit is cool! Use it in seqPLoop
+##### Fit is cool! Use it in seqPLoop
 ```c2hs
 d1 $ fit' 1 4 (run 4) "[0 3*2 2 1 0 3*2 2 [1*8 ~]]/2" $ s "" 
 ``` 
 
-#### SPREAD!!!
+##### SPREAD!!!
 ```c2hs
-d1 $ spread slow [2,4/3] $ sound 
-```
-is the same as
-```c2hs
+d1 $ spread slow [2,4/3] $ sound --- is the same as
 d1 $ slow "<2 4/3>" $ sound 
 ```
 ```c2hs
 d1 $ spread ($) [fast 2, rev, slow 2, striate 3, (# speed "0.8")] $ sound 
 ```
-#### try
+##### try this
 ```c2hs
 d1 $ fastspread slow [2,4/3] $ sound 
 ```
 
-####   Within!!!
+#####   Within!!!
 ```c2hs
 d1 $ within (0, 0.5) (fast 2) $ sound
 d1 $ within (0.75, 1) (# speed "0.5") $ sound 
@@ -106,9 +101,9 @@ d1 $ within (0.75, 1) (# speed "0.5") $ sound
 d1 $ chunk 4 (somefunc) $ s
 ```
 
-###  >>>>>>>>>>>>>>>>>>>>>>>>>> Compositions <<<<<<<<<<<<<<<<<<<<<<<<<<<<
+####  > Compositions <
 
-#### One after the other
+##### One after the other
 ```c2hs
 d1 $ seqPLoop [
   (0, 16, s "" ),
@@ -122,7 +117,7 @@ s "  "
 ] # n ( irand 16 )
 ```
 
-#### All together now
+##### All together now
 ```c2hs
 d2 $ stack [
   s "  ",
@@ -130,7 +125,7 @@ d2 $ stack [
 ] # n (run 16) 
 ```
 
-#### Both ways!!!
+##### Both ways!!!
 ```c2hs
 d2 $ seqPLoop [
   (0, 32, stack [
@@ -144,7 +139,7 @@ d2 $ seqPLoop [
 ] 
 ```
 
-### >>>>>>>>>>>>>>>>>>>>>>> Utility <<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+#### > Utility <
 
 ```c2hs
 d1 $ sound "xxx*4" # speed (rand + 0.5)
@@ -155,21 +150,21 @@ d1 $ n (run "<4 8 4 6>") # sound
 # somefunc (slow 8 $ saw)
 d1 $ s " xxxx*4 " # n (choose [0,2,5]) 
 ```
-#### ********* constrain continuous patterns speed **********
+##### *** constrain continuous patterns speed ***
 ```c2hs
 d1 $ s (discretise 1 $ choose["kif", "kip"]) 
 d1 $ s (struct "x ~ x ~ ~ x ~ ~" $ choose["kif", "kip"]) 
 solo $ d1 $ 
 ```
 
-### >>>>>>>>>>>>>>>>>>>>>>> Transitions <<<<<<<<<<<<<<<<<<<<<<<<<<
+#### > Transitions <
 
 ```c2hs
 t1 (clutchIn 8) $ sound 
 t2 (jumpIn' 1) $ 
 ```
 
-## Slack Excerpts
+### Slack Excerpts
 
 
 averageaht 5:43 PM
@@ -339,7 +334,7 @@ efairbanks 9:40 PM
 
 
 
-#### 2017-07-02 ----------------------------------------------------------------------------------------------------
+##### 2017-07-02 ----------------------------------------------------------------------------------------------------
 
 mauro 2:46 PM
   added this Smalltalk snippet  (n.a. this is cool! Promising!)
@@ -401,7 +396,7 @@ Tidal.stop;
 datamads 11:55 PM
   A dope little trick that it deserves the spotlight: https://medium.com/potac/reusable-code-in-tidalcycles-59b7a4dba30a
 
-#### 2017-07-07 ------------------------------------------------------------------------------------------------------------
+##### 2017-07-07 ------------------------------------------------------------------------------------------------------------
 
 bgold 8:38 PM
   Ooh, hadn't realized that there's no reason custom effects can't also use parameters like n (or freq).
@@ -420,9 +415,9 @@ SynthDef("dirt_lpf2"++~dirt.numChannels, {|out, cutoff2=0, resonance, freq|
 ```
 
 
-#### 2017-07-17------------------------------------------------------------------------------------------------------------
+##### 2017-07-17------------------------------------------------------------------------------------------------------------
 
-##### this is pure gold vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+###### this is pure gold vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 
 danielmkarlsson 5:51 PM
   Hey gang.
