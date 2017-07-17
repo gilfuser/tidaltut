@@ -291,7 +291,7 @@ yaxu
 then this
 
 
-let randArcs :: Int -> Pattern [Arc]
+`let randArcs :: Int -> Pattern [Arc]
     randArcs n = do rs <- mapM (\x -> (pure $ (toRational x)/(toRational n)) <~ rand) [0 .. (n-1)]
                     let rats = map toRational rs
                         total = sum rats
@@ -315,7 +315,7 @@ let randArcs :: Int -> Pattern [Arc]
                              ) $ enumerate $ thd' $ head $ arc (randArcs n) (sam s, nextSam s)
     compressTo (s,e) p = compress (cyclePos s, e-(sam s)) p
     substruct' :: Pattern Int -> Pattern a -> Pattern a
-    substruct' s p = Pattern $ \a -> concatMap (\(a', _, i) -> arc (compressTo a' (inside (1/toRational(length (arc s (sam (fst a), nextSam (fst a))))) (rotR (toRational i)) p)) a') (arc s a)
+    substruct' s p = Pattern $ \a -> concatMap (\(a', _, i) -> arc (compressTo a' (inside (1/toRational(length (arc s (sam (fst a), nextSam (fst a))))) (rotR (toRational i)) p)) a') (arc s a)`
 
 
 then this
