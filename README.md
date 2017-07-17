@@ -9,9 +9,13 @@
 ### >>>>>>>>>>> Pattern Transformers - Event Scale <<<<<<<<<<<<<<<
 
 #### change order
-```c2hs d1 $ palindrome $ ```
+```c2hs 
+  d1 $ palindrome $ 
+ ```
 is the same as
-```c2hs d1 $ every 2 (rev) $ n ```
+```c2hs 
+d1 $ every 2 (rev) $ n 
+```
 
 ```c2hs d1 $ iter 4 $ sound ```
 ```c2hs d1 $ sound $ scramble 3 "xxx*3" ```
