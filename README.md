@@ -2,24 +2,22 @@
 
 ## My own Tidal Cycles Tutorial
 
-#### maybe this can be useful for someone some day. Atm, it is only to have organized what I have been learning in Tidal.
+#### maybe this can be useful for someone someday. Atm, it is only to have organized what I have been learning in Tidal.
 
 ## Cheat Sheet
-
-Cheat sheet - Dramms
 
 ### >>>>>>>>>>> Pattern Transformers - Event Scale <<<<<<<<<<<<<<<
 
 #### change order
-``` d1 $ palindrome $```
+```c2hs d1 $ palindrome $ ```
 is the same as
-``` d1 $ every 2 (rev) $ n```
+```c2hs d1 $ every 2 (rev) $ n ```
 
-``` d1 $ iter 4 $ sound ```
-``` d1 $ sound $ scramble 3 "xxx*3" ```
-``` d1 $ every 4 (0.25 <~) $ sound ```
-``` d1 $ "<0 0.5 0.125>" <~ sound ```
-``` d1 $ "[0 0.25]/4" <~ (sound "  ") ```
+```c2hs d1 $ iter 4 $ sound ```
+```c2hs d1 $ sound $ scramble 3 "xxx*3" ```
+```c2hs d1 $ every 4 (0.25 <~) $ sound ```
+```c2hs d1 $ "<0 0.5 0.125>" <~ sound ```
+```c2hs d1 $ "[0 0.25]/4" <~ (sound "  ") ```
 
 #### play a fraction of a pattern
 ``` d1 $ linger 0.25 $ sound ```
