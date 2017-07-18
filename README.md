@@ -423,7 +423,7 @@ bgold 8:38 PM
   Ooh, hadn't realized that there's no reason custom effects can't also use parameters like n (or freq).
   Note-following filter:
 
-```361
+```Smalltalk
 ~dirt.addModule( \lpf2, {|dirtEvent| dirtEvent.sendSynth("dirt_lpf2" ++ ~dirt.numChannels,
     [cutoff2: ~cutoff2, freq:~freq, resonance:~resonance, out: ~out])}, {~cutoff2.notNil});
 
