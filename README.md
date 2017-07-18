@@ -424,7 +424,7 @@ bgold 8:38 PM
   Note-following filter:
 
 ```sc
-~dirt.addModule( 'lpf2', {|dirtEvent| dirtEvent.sendSynth("dirt_lpf2" ++ ~dirt.numChannels,
+~dirt.addModule( \lpf2, {|dirtEvent| dirtEvent.sendSynth("dirt_lpf2" ++ ~dirt.numChannels,
     [cutoff2: ~cutoff2, freq:~freq, resonance:~resonance, out: ~out])}, {~cutoff2.notNil});
 
 SynthDef("dirt_lpf2"++~dirt.numChannels, {|out, cutoff2=0, resonance, freq|
@@ -438,11 +438,10 @@ SynthDef("dirt_lpf2"++~dirt.numChannels, {|out, cutoff2=0, resonance, freq|
 
 ##### 2017-07-17------------------------------------------------------------------------------------------------------------
 
-###### this is pure gold vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+####### this is pure gold vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 
 danielmkarlsson 5:51 PM
-
-  Hey gang.
+> Hey gang.
   I'd like to choose a new value for a sine envelope each time that particular envelope has completed its full duration.
   This example chooses a new value for the sine envelope each cycle which is not what I want:
 ```c2hs
@@ -458,10 +457,10 @@ let cycleSines sn len = seqP $ map (\(a,b,c) -> (fromIntegral a, fromIntegral b,
              r = randomList sn len
 ```
 
-  so `cycleSines 16 100` will give you a series of sines with a `slow` in the range 1..16, and repeat for 100 sine cycles,
+> so `cycleSines 16 100` will give you a series of sines with a `slow` in the range 1..16, and repeat for 100 sine cycles,
   which in this case is about to cycle count 850 (because of the random lengths).
 
-  Note that due to the way "random" numbers work, this will give the same exact sequence each time you 
+> Note that due to the way "random" numbers work, this will give the same exact sequence each time you 
   use the same `sn` and  `len`. If you want to mix things up you can change up the `[1..len]` in randomList
 ```c2hs
 let randomList' sn len k = map (ceiling . (* sn) . timeToRand . (+ k)) [1..len]` would give a different result for different `k
@@ -469,20 +468,18 @@ let randomList' sn len k = map (ceiling . (* sn) . timeToRand . (+ k)) [1..len]`
 * [further footnote, `sine` starts its cycle at its midpoint, 0.5, if you want the waves to "reset" their cycle at 0.0 I think you can just rotate it, replacing `sine` with `0.25 ~> sine`]
 
 bgold 3:48 AM
-I realized mine doesn't work right - the phases aren't necessarily going to line up to be continuous.
+> I realized mine doesn't work right - the phases aren't necessarily going to line up to be continuous.
 
 ok try this
-yaxu
-10:57
-eval these
+yaxu 10:57
+> eval these
 ```c2hs
 import Sound.Tidal.Time
 import Sound.Tidal.Utils
 import Data.Maybe
 ```
-yaxu
-10:57
-then this
+yaxu  10:57
+> then this
 ```c2hs
 let randArcs :: Int -> Pattern [Arc]
   randArcs n = do rs <- mapM (\x -> (pure $ (toRational x)/(toRational n)) <~ rand) [0 .. (n-1)]
@@ -510,19 +507,19 @@ let randArcs :: Int -> Pattern [Arc]
     substruct' :: Pattern Int -> Pattern a -> Pattern a
     substruct' s p = Pattern $ \a -> concatMap (\(a', _, i) -> arc (compressTo a' (inside (1/toRational(length (arc s (sam (fst a), nextSam (fst a))))) (rotR (toRational i)) p)) a') (arc s a)
 ```
-then this
+> then this
 ```c2hs
 d1 $ slow 16 $ substruct' (randStruct 16) $ sound "arpy*16" # gain (scale 0.5 1 sine) # speed (discretise 1 $ scale 1 2 rand)
 ```
 yaxu 12:05 AM
-a bit better: 
+> a bit better: 
 ```c2hs
 d1 $ substruct (slow 8 $ randStruct 4) $ sound "arpy*8" # gain (scale 0.5 1 sine) # up (discretise 1 $ choose [0,7,12])
 
 d1 $ substruct (randStruct 2) $ sound "arpy*8" # gain (scale 0.5 1 sine) # up (discretise 1 $ choose [0,7,12,2])
 ```
 yaxu 1:12 PM
-  The first pattern sounds like it has no metronomic pulse when you play it on its own but 
+>The first pattern sounds like it has no metronomic pulse when you play it on its own but 
   when you add the second pattern you can hear that the cp always aligns perfectly with 
   the start of every fourth repetition of the first pattern
 ```c2hs
@@ -531,8 +528,8 @@ d1 $ slow 4 $ substruct' (randStruct 4) $ stack [n (off 0.125 (+7) $ "e2 d4 e3 [
 d2 $ slow 4 $ sound "cp" # shape 0.6
 ```
 danielmkarlsson 1:19 PM
-  I was messing around with this and it feels like it might be slightly off at times choosing values while not at zero.
-  Try this:
+> I was messing around with this and it feels like it might be slightly off at times choosing values while not at zero.
+>Try this:
 ```c2hs
 d1
   $ slow 16
@@ -543,7 +540,7 @@ d1
   # n (discretise 1 $ choose [5,7,9,13,19])
   # pan (discretise 1 $ scale 0 1 $ rand)
 ```
-  Ah! bgolds solution with `0.25 ~> sine` sorted it!
+> Ah! bgolds solution with `0.25 ~> sine` sorted it!
 
 
 
