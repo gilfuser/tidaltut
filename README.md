@@ -171,23 +171,20 @@ t2 (jumpIn' 1) $
 averageaht 5:43 PM
 > I know this information can be put together from the tutorial, but I can't figure it out: 
   How can I play a chord progression that lasts more than a single cycle (say, 6 quarter notes) every N cycles?
-
-  assume 4/4 time. every 4 measures I want to play some notes, say ``` "c1 e1 g1 b1 d1" ``` , all quarter notes
+> assume 4/4 time. every 4 measures I want to play some notes, say ``` "c1 e1 g1 b1 d1" ``` , all quarter notes
   let me know if that's clear or not
   I know I can pitch notes with up or use midinotes to create the notes
   I can get something to happen every 4 measures using every 4, but this seems like a hack:
   ```c2hs 
   d1 $ every 4 (const $ sound "bd") $ sound "~" 
   ```
-  guess I use slowcat to create a pattern longer than a single cycle
+> guess I use slowcat to create a pattern longer than a single cycle
 
 efairbanks 9:11 PM
-
-  You can use slow and fast to change the speed of a Pattern, not just ParamPatterns.
+> You can use slow and fast to change the speed of a Pattern, not just ParamPatterns.
 
 yaxu 9:12 PM
-
-  is this what you want? 
+> is this what you want? 
   ```c2hs 
  "<[c1 e1 g1 b1] [d1 ~ ~ ~] ~ ~>"
  ```
@@ -195,12 +192,11 @@ efairbanks 9:13 PM
 ```c2hs 
 d1 $ s "pluck*2" # up (slow 8 "0 3 5 7") 
 ```
-  Or even
+> Or even
   ```c2hs 
 d1 $ s "pluck*2" |*| up "[0,3,7]" |*| up (slow 8 "0 3 5 7") 
 ```
-  
-  If you want to get more advanced, you can apply a slow progression to multiple elements:
+> If you want to get more advanced, you can apply a slow progression to multiple elements:
 ```c2hs
 do
   cps 1
@@ -211,172 +207,143 @@ do
 ```
 
 averageaht 9:16 PM
-
-  \@yaxu yes, that is what I want, can I slow that down so that it happens in 2 cycles I guess?
+> \@yaxu yes, that is what I want, can I slow that down so that it happens in 2 cycles I guess?
 
 averageaht 9:17 PM
-
-  \@efairbanks I dont get why the plucks are playing twice in your example, even if I remove *2
+> \@efairbanks I dont get why the plucks are playing twice in your example, even if I remove *2
   oh, I guess 8/4=2
 
 averageaht 9:18 PM
-
-  ```c2hs
+```c2hs
   d1 $ s "pluck" # up (slow 6 "0 3 5 7 9 11") 
-  ```  
+```  
   works
 
 efairbanks 9:19 PM
-
-  Yeah, and there slow is essentially changing the length of a cycle.
+> Yeah, and there slow is essentially changing the length of a cycle.
   So you could alternate between two melodies per cycle like so:
-  ``` d1 $ s "pluck" # up (slow 6 "<[0 3 5 7 9 11] [2 4 8 11 13 15]>") ```
+```c2hs
+d1 $ s "pluck" # up (slow 6 "<[0 3 5 7 9 11] [2 4 8 11 13 15]>") 
+```
 
 averageaht 9:20 PM
-
-  hmm I don't want to change the length of the cycle
+> hmm I don't want to change the length of the cycle
 
 efairbanks 9:21 PM
-
-  It's only changing it local to the Pattern, not globally.
+> It's only changing it local to the Pattern, not globally.
 
 averageaht 9:21 PM
-
-  how do I get something that's "in time" with my other patterns?
+> how do I get something that's "in time" with my other patterns?
 
 efairbanks 9:21 PM
-
-  Another way to think of slow is that it slows down the time that the pattern is receiving, so to speak.
-  The pattern: 
+> Another way to think of slow is that it slows down the time that the pattern is receiving, so to speak.
+> The pattern: 
 ```c2hs 
 "<[0 3 5 7 9 11] [2 4 8 11 13 15]>" 
 ```
-  is operating on a different time scale than the "pluck" pattern 
-  because  you've slowed it.
-  But you could then do.
+> is operating on a different time scale than the "pluck" pattern because  you've slowed it.
+> But you could then do.
 ```c2hs 
  d1 $ (s "pluck" # up (slow 6 "<[0 3 5 7 9 11] [2 4 8 11 13 15]>")) |*| up "0 7 12" 
  ```
-  And the cycle ``` "0 7 12" ``` is being evaluated after all that, 
-  so it is operating at the normal time scale and will occupy one normal cycle.
+> And the cycle ``` "0 7 12" ``` is being evaluated after all that, so it is operating at the normal time scale and will occupy one normal cycle.
   
-  I mean, not strictly. There are a lot of ways to achieve what you want to do. 
+> I mean, not strictly. There are a lot of ways to achieve what you want to do. 
   The ``` <> ``` mean "every cycle play the next element within <>"
   Where each element occupies one cycle.
   And then the whole thing is being slowed by a factor of 6.
 
 averageaht 9:26 PM
-
-  okay, so there are six notes in those two cycles
+> okay, so there are six notes in those two cycles
   
 efairbanks
-
-  6 notes in one cycle, 6 notes in the next.
+> 6 notes in one cycle, 6 notes in the next.
   And because the whole thing is slowed by a factor of 6 after that, each cycle is 6 times as long as it normally would be.
   So each note ends up being the length of "one cycle" from a global reference point.
 
 averageaht 9:27 PM
-
-  so I guess the alternative to ``` <> ``` is ``` slowcat ```?
+> so I guess the alternative to ``` <> ``` is ``` slowcat ```?
   
 yaxu 9:28 PM
-
-  an important point is that tidal has no fixed idea of what a beat is
+> an important point is that tidal has no fixed idea of what a beat is
   the reference point is (almost) always the cycle
 
 averageaht 9:30 PM
-
-  hmm I got the impression a cycle was a measure
+> hmm I got the impression a cycle was a measure
 
 efairbanks 9:32 PM
-
-  Yeah, cycles are more like units of time, and time is malleable in Tidal.
+> Yeah, cycles are more like units of time, and time is malleable in Tidal.
   Tempo is defined in cycles per second rather than BPM.
 
 anny 9:32 PM
-
-  cps 1 == bpm 60
+> cps 1 == bpm 60
 
 yaxu 9:33 PM
-
-  only if you put four events per cycle
+> only if you put four events per cycle
 
 efairbanks 9:33 PM
-
-  ^ depending on if you want to think of a cycle as a beat.
+> ^ depending on if you want to think of a cycle as a beat.
 
 yaxu 9:34 PM
-
-  cps 1 feels like 120 bpm to me
+> cps 1 feels like 120 bpm to me
 
 averageaht 9:35 PM
-  why doesn't this work?
+> why doesn't this work?
 ```c2hs 
 d1 $ slowcat [s "pluck*4" # up "[0 3 5 7]", s "pluck*2 ~ ~" # up "9 11 0 0 "] 
 ```
 
 yaxu 9:35 PM
-
-  but if you put three events in a cycle it'll feel like a different bpm
+> but if you put three events in a cycle it'll feel like a different bpm
 
 efairbanks 9:36 PM
+> /@averageaht works for me
 
-  /@averageaht works for me
-  But!
-  This ``` "pluck*2 ~ ~" ```
-  Does not mean
+> But!
+  
+> This ``` "pluck*2 ~ ~" ```
+> Does not mean
   ``` "pluck pluck ~ ~" ```
+> It means
+``` "[pluck pluck] ~ ~" ```
+> That's why it's playing the 9 twice.
+> The up pattern hasn't switched to 0 yet.
 
 averageaht 9:36 PM
-
-  hmm for me it's playing the 9 twice
-
-efairbanks 9:36 PM
-
-  It means
-  ``` "[pluck pluck] ~ ~" ```
-  That's why it's playing the 9 twice.
-  The up pattern hasn't switched to 0 yet.
+> hmm for me it's playing the 9 twice
 
 yaxu 9:37 PM
-
-  yes the second pluck will start 1/6th of the way into each cycle
+> yes the second pluck will start 1/6th of the way into each cycle
 
 efairbanks 9:37 PM
-
-  ``` d1 $ slowcat [s "pluck*4" # up "[0 3 5 7]", s "pluck pluck ~ ~" # up "9 11 0 0 "] ``` works the way you'd expect.
-  That's actually something that's a bit unclear about patterns. 
-  I've messed up thinking they would work that way fairly recently.
+```c2hs 
+d1 $ slowcat [s "pluck*4" # up "[0 3 5 7]", s "pluck pluck ~ ~" # up "9 11 0 0 "] 
+``` 
+>works the way you'd expect.
 
 yaxu 9:38 PM
-
-  you can do ``` "pluck!2 ~ ~" ``` for that
+> you can do ``` "pluck!2 ~ ~" ``` for that
 
 efairbanks 9:39 PM
-
-  btw \@averageaht if you want to apply the same progression to multiple patterns, 
-  you can do stuff like this: 
+> btw \@averageaht if you want to apply the same progression to multiple patterns, you can do stuff like this: 
 ```c2hs 
  d1 $ slow 2 $
      stack [s "bass:3(3,8)", s "pluck(5,8,2)" # up "24"] |*| up (slow 4 "0 5 7 0") 
 ```
 
 averageaht 9:39 PM
-
-  I can see how angle brackets are useful if cycle=beat. unfortunately they seem to just "not work" for me. I get:
+> I can see how angle brackets are useful if cycle=beat. unfortunately they seem to just "not work" for me. I get:
   no synth or sample named 'nil' could be found.
   instrument not found: nil
 
 yaxu 9:39 PM
-
-  well if you just want to repeat once you can do ``` "pluck ! ~ ~" ```
+> well if you just want to repeat once you can do ``` "pluck ! ~ ~" ```
 
 anny 9:39 PM
-
-  ``` pluck ! ``` has the same effect - number is optional. ``` pluck !!! ``` also
+> ``` pluck ! ``` has the same effect - number is optional. ``` pluck !!! ``` also
 
 efairbanks 9:40 PM
-  That's cool as heck. 
+> That's cool as heck. 
   Is there way to tell Tidal to continue the last note instead of cutting it off in the case of using cut 
   or synthdefs as well? I heard something about _ but last time I tried it, it didn't work for me.
 
