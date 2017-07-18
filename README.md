@@ -357,7 +357,7 @@ mauro 2:46 PM
 
   added this Smalltalk snippet  (n.a. this is cool! Promising!)
   
-```sc
+```scd
 Tidal {
   classvar ghci, ghciOutput;
 
