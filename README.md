@@ -169,8 +169,7 @@ t2 (jumpIn' 1) $
 
 
 averageaht 5:43 PM
-
-  I know this information can be put together from the tutorial, but I can't figure it out: 
+> I know this information can be put together from the tutorial, but I can't figure it out: 
   How can I play a chord progression that lasts more than a single cycle (say, 6 quarter notes) every N cycles?
 
   assume 4/4 time. every 4 measures I want to play some notes, say ``` "c1 e1 g1 b1 d1" ``` , all quarter notes
@@ -222,7 +221,10 @@ averageaht 9:17 PM
 
 averageaht 9:18 PM
 
-  ``` d1 $ s "pluck" # up (slow 6 "0 3 5 7 9 11") ```  works
+  ```c2hs
+  d1 $ s "pluck" # up (slow 6 "0 3 5 7 9 11") 
+  ```  
+  works
 
 efairbanks 9:19 PM
 
